@@ -1,26 +1,42 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import Login from './components/Login';
+import Register from './components/Register';
+import { BrowserRouter, Route, useHistory } from 'react-router-dom';
+import Chat from './components/Chat';
+import Message from './components/MessageBox';
 
-function App() {
+import Chatting from './components/Chatting';
+
+
+
+
+
+const App: FC = () => {
+  
+  let history = useHistory();
+  function setToken(userToken:{}){
+    // console.log("App",userToken);
+    sessionStorage.setItem('token',JSON.stringify(userToken));
+  }
+
+  var token =  sessionStorage.getItem('token');
+  // console.log(token);
+
+  if(!token){
+    return  <Login  setToken = {setToken}/> 
+   
+  }
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+      
+      <Route path="/" component={Chat}/>
+      <Route path="/messages/:id" component={Chatting} />
+      </BrowserRouter>
+      {/* <Login setToken = {setToken}/> */}
     </div>
   );
 }
-
 export default App;
